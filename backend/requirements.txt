@@ -1,0 +1,6 @@
+# Core Dependencies
+Django>=4.2               # The main framework
+djangorestframework>=3.14 # For building REST APIs
+psycopg2-binary>=2.9      # PostgreSQL database driver
+django-cors-headers>=3.14 # To allow React Native to access your API
+django-environ>=0.10      # For managing environment variables
