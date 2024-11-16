@@ -24,6 +24,7 @@ if [ ! -f "/var/lib/postgresql/data/.db_ready" ]; then
 	psql -U $POSTGRES_USER -d $POSTGRES_DB -c "ALTER SYSTEM SET ssl_cert_file = '/var/lib/postgresql/server.crt';"
 	psql -U $POSTGRES_USER -d $POSTGRES_DB -c "ALTER SYSTEM SET ssl_key_file = '/var/lib/postgresql/server.key';"
 
+	psql -U $POSTGRES_USER -d $POSTGRES_DB -f /usr/local/bin/init.sql
 
 	touch /var/lib/postgresql/data/.db_ready
 	chown postgres:postgres /var/lib/postgresql/data/.db_ready
