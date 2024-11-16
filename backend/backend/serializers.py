@@ -49,5 +49,5 @@ class ActivityLogSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ActivityLog
-        fields = ['id', 'activity_type', 'activity_time', 'square_id']
+        fields = ['id', 'activity_type', 'activity_time', 'square_id', 'user_id']
         read_only_fields = ['activity_time']
