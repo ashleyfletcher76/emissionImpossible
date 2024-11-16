@@ -1,22 +1,43 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
+from backend.models import Profile
+
+from backend.getters import get_user_full_info
 
 class UserSerializer(serializers.ModelSerializer):
     home_city = serializers.CharField(write_only=True)
+    score = serializers.IntegerField(read_only=True)
+    distance_with_bike = serializers.FloatField(read_only=True)
+    distance_with_walking = serializers.FloatField(read_only=True)
+    distance_with_public_transport = serializers.FloatField(read_only=True)
+    co2_saved = serializers.FloatField(read_only=True)
+
     class Meta:
         model = User
-        fields = ['username', 'password', 'home_city']
+        fields = [
+            'username', 'password', 'home_city',
+            'score', 'distance_with_bike', 'distance_with_walking',
+            'distance_with_public_transport', 'co2_saved'
+        ]
         extra_kwargs = {
             'password': {'write_only': True}
         }
 
     def create(self, validated_data):
         home_city = validated_data.pop('home_city')
-        user = User(
-            username=validated_data['username']
-        )
+        user = User(username=validated_data['username'])
         user.set_password(validated_data['password'])
         user.save()
+
+        # Create the Profile with default values
+        Profile.objects.create(
+            user=user,
+            score=0,
+            distance_with_bike=0.0,
+            distance_with_walking=0.0,
+            distance_with_public_transport=0.0,
+            co2_saved=0.0,
+        )
 
         print(f"User {user.username} is from {home_city}")
         return user

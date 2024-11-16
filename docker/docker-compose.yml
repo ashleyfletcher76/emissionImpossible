@@ -4,6 +4,8 @@ services:
   backend-db:
     container_name: backend-db
     build: ./../backend/postgres
+    env_file:
+      - .env  # Load environment variables from .env
     environment:
       POSTGRES_USER: ${BACKEND_SERVICE_USER}
       POSTGRES_PASSWORD: ${BACKEND_SERVICE_PASSWORD}
@@ -24,6 +26,8 @@ services:
   backend-service:
     build: ./../backend
     container_name: backend-service
+    env_file:
+      - .env  # Load environment variables from .env
     environment:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
       DJANGO_DEBUG: ${DJANGO_DEBUG}
