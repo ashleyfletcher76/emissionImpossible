@@ -12,7 +12,7 @@ export const Grid = ({ rows, columns, latstart, lontstart}) => {
             const opacity = Math.random();
 
             grid.push(
-                <GridPoligon x={latstart + x * 0.001} y={lontstart + y * 0.001} opacity={opacity} />
+                <GridPoligon key={`${x.toString()}-${y.toString()}`} x={latstart + x * 0.001} y={lontstart + y * 0.001} opacity={opacity} />
             );
         }
     }

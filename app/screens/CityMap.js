@@ -48,7 +48,7 @@ export const CityMap = () => {
                     title="Your Location"
                     description="This is where you are!"
                 />
-				<Grid rows={30} columns={40} latstart={49.125} lontstart={9.203}/>
+				<Grid rows={40} columns={35} latstart={49.125} lontstart={9.203}/>
                 {/* <GridPoligon x={49.151} y={9.215} opacity={1} /> */}
             </MapView>
         </View>
