@@ -2,6 +2,13 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from backend.models import Profile
 from backend.getters import get_user_full_info
+from backend.setters import (
+    increment_user_score,
+    increment_distance_with_bike,
+    increment_distance_with_walking,
+    increment_distance_with_public_transport,
+    increment_co2_saved,
+)
 
 
 class UserGetterTests(TestCase):
@@ -38,20 +45,48 @@ class UserGetterTests(TestCase):
         self.assertEqual(user_info["distance_with_public_transport"], 8.0)
         self.assertEqual(user_info["co2_saved"], 3.1)
 
-    def test_get_user_full_info_mate(self):
-        """Test fetching Mate's information."""
-        mate = User.objects.get(username="Mate")
-        user_info = get_user_full_info(mate.id)
+    def test_increment_user_score_ashley(self):
+        """Test incrementing Ashley's score."""
+        ashley = User.objects.get(username="Ashley")
+        result = increment_user_score(ashley.id, 5)
 
-        print("\nUser Info for Mate:")
+        print("\nIncrement Result for Ashley's Score:")
+        print(result)
+
+        user_info = get_user_full_info(ashley.id)
+        self.assertEqual(user_info["score"], 15)
+
+    def test_increment_distance_with_bike_mate(self):
+        """Test incrementing Mate's bike distance."""
+        mate = User.objects.get(username="Mate")
+        result = increment_distance_with_bike(mate.id, 2.8)
+
+        print("\nIncrement Result for Mate's Bike Distance:")
+        print(result)
+
+        user_info = get_user_full_info(mate.id)
+        self.assertEqual(user_info["distance_with_bike"], 13.0)
+
+    def test_increment_all_variables(self):
+        """Test incrementing all variables for Ashley."""
+        ashley = User.objects.get(username="Ashley")
+
+        increment_user_score(ashley.id, 3)
+        increment_distance_with_bike(ashley.id, 1.5)
+        increment_distance_with_walking(ashley.id, 0.7)
+        increment_distance_with_public_transport(ashley.id, 2.0)
+        increment_co2_saved(ashley.id, 1.2)
+
+        user_info = get_user_full_info(ashley.id)
+
+        print("\nUpdated User Info for Ashley (After Increments):")
         print(user_info)
 
-        self.assertEqual(user_info["username"], "Mate")
-        self.assertEqual(user_info["score"], 15)
-        self.assertEqual(user_info["distance_with_bike"], 10.2)
-        self.assertEqual(user_info["distance_with_walking"], 4.1)
-        self.assertEqual(user_info["distance_with_public_transport"], 15.0)
-        self.assertEqual(user_info["co2_saved"], 5.2)
+        self.assertEqual(user_info["score"], 13)
+        self.assertEqual(user_info["distance_with_bike"], 7.0)
+        self.assertEqual(user_info["distance_with_walking"], 3.0)
+        self.assertEqual(user_info["distance_with_public_transport"], 10.0)
+        self.assertEqual(user_info["co2_saved"], 4.3)
 
     def test_home_city(self):
         """Test that home city for Ashley and Mate is Heilbronn."""
