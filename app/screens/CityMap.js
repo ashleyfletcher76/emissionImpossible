@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Button } from 'react-native';
 import MapView, { Marker, Polygon } from 'react-native-maps';
 import { GridPoligon } from '../components/GridPoligon';
+import { Grid } from '../components/CityGrid';
 import { getCurrentPosition } from '../components/getCurrentPosition';
 
 export const CityMap = () => {
@@ -47,7 +48,8 @@ export const CityMap = () => {
                     title="Your Location"
                     description="This is where you are!"
                 />
-                <GridPoligon x={0} y={0} opacity={1} />
+				<Grid rows={30} columns={40} latstart={49.125} lontstart={9.203}/>
+                {/* <GridPoligon x={49.151} y={9.215} opacity={1} /> */}
             </MapView>
         </View>
     );
