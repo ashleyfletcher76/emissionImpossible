@@ -5,11 +5,12 @@ from rest_framework.permissions import IsAuthenticated
 from ..serializers import ActivityLogSerializer
 
 class LogActivityView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = []
+    authentication_classes = []
 
     def post(self, request):
         data = request.data
-        data['user'] = request.user.id  # Link the logged-in user to the activity
+        data['user'] = request.user.id 
         serializer = ActivityLogSerializer(data=data)
 
         if serializer.is_valid():
