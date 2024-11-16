@@ -1,20 +1,17 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from backend.models import Profile
-from .models import ActivityLog
+from backend.models import ActivityLog, Profile
 
 from backend.getters import get_user_full_info
 
-class UserSerializer(serializers.ModelSerializer):
-    home_city = serializers.CharField(write_only=True)
-    score = serializers.IntegerField(read_only=True)
-    distance_with_bike = serializers.FloatField(read_only=True)
-    distance_with_walking = serializers.FloatField(read_only=True)
-    distance_with_public_transport = serializers.FloatField(read_only=True)
-    co2_saved = serializers.FloatField(read_only=True)
 
 class UserSerializer(serializers.ModelSerializer):
     home_city = serializers.CharField(write_only=True)
+    score = serializers.IntegerField(source="profile.score", read_only=True)
+    distance_with_bike = serializers.FloatField(source="profile.distance_with_bike", read_only=True)
+    distance_with_walking = serializers.FloatField(source="profile.distance_with_walking", read_only=True)
+    distance_with_public_transport = serializers.FloatField(source="profile.distance_with_public_transport", read_only=True)
+    co2_saved = serializers.FloatField(source="profile.co2_saved", read_only=True)
 
     class Meta:
         model = User
