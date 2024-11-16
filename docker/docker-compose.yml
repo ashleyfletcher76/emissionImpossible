@@ -36,11 +36,11 @@ services:
       DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE}
     networks:
       my_network:
-    healthcheck:
-      test: [ "CMD-SHELL", "curl -k -f http://localhost:8000/auth/health/ || exit 1" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    # healthcheck:
+    #   test: [ "CMD-SHELL", "curl -k -f http://localhost:8000/auth/health/ || exit 1" ]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 5
     depends_on:
       backend-db:
         condition: service_healthy
