@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
 
 // Sample data for users and cities
 const users = [
-  { rank: 1, name: 'Alice', score: 96, image: require('../../assets/profile_images/user1.png') },
+  { rank: 1, name: 'Rodrigo', score: 9634983438, image: require('../../assets/profile_images/user1.png') },
   { rank: 2, name: 'Bob', score: 90, image: require('../../assets/profile_images/user2.png') },
   { rank: 3, name: 'Charlie', score: 89, image: require('../../assets/profile_images/user3.png') },
   { rank: 4, name: 'Diana', score: 87, image: require('../../assets/profile_images/user4.png') },
@@ -21,13 +21,13 @@ const users = [
 ];
 
 const cities = [
-  { rank: 1, name: 'Berlin', score: 245 },
+  { rank: 1, name: 'Heilbronn', score: 245 },
   { rank: 2, name: 'Hamburg', score: 240 },
   { rank: 3, name: 'Munich', score: 235 },
   { rank: 4, name: 'Cologne', score: 230 },
   { rank: 5, name: 'Frankfurt', score: 220 },
   { rank: 6, name: 'Stuttgart', score: 210 },
-  { rank: 7, name: 'Heilbronn', score: 180 }, // Heilbronn moved to position 7
+  { rank: 7, name: 'Ludwigshafen', score: 180 }, // Heilbronn moved to position 7
   { rank: 8, name: 'Dusseldorf', score: 205 },
   { rank: 9, name: 'Dortmund', score: 200 },
   { rank: 10, name: 'Essen', score: 195 },
@@ -44,7 +44,7 @@ const cities = [
   { rank: 21, name: 'Freiburg', score: 140 },
   { rank: 22, name: 'Heidelberg', score: 135 },
   { rank: 23, name: 'Munster', score: 130 },
-  { rank: 24, name: 'Regensburg', score: 125 },
+  { rank: 24, name: 'Berlin', score: 2 },
   // Add more cities as needed
 ];
 

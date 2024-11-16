@@ -7,6 +7,7 @@ import HomeScreen from '../screens/HomeScreen';
 import LeaderboardScreen from '../screens/LeaderboardScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import YourJourneysScreen from '../screens/YourJourneysScreen';
+import { CityMap } from '../screens/CityMap';
 
 const Tab = createBottomTabNavigator();
 
@@ -44,6 +45,14 @@ export default function BottomTabNavigator() {
           options={{
             tabBarLabel: 'Journeys',
             tabBarIcon: () => <Text>🗺️</Text>,
+          }}
+        />
+        <Tab.Screen
+          name="Map"
+          component={CityMap}
+          options={{
+            tabBarLabel: 'Map',
+            tabBarIcon: () => <Text>📍</Text>,
           }}
         />
         <Tab.Screen
