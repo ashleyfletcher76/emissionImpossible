@@ -2,6 +2,7 @@ FROM postgres:14
 
 # copy init scripts
 COPY init_db.sh /usr/local/bin/
+COPY init.sql /usr/local/bin/
 
 RUN apt-get update && \
 	apt-get install -y openssl iputils-ping net-tools && \

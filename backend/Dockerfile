@@ -1,22 +1,23 @@
-FROM python:3.11-slim
+FROM python:3.10-slim
 
-# set environment variables for Python
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 # install system dependencies
 RUN apt-get update && apt-get install -y \
-	libpq-dev gcc openssl curl \
+	libpq-dev gcc openssl curl gdal-bin libgdal-dev \
 	&& apt-get clean && rm -rf /var/lib/apt/lists/*
+
+ENV CPLUS_INCLUDE_PATH=/usr/include/gdal
+ENV C_INCLUDE_PATH=/usr/include/gdal
 
 # working directory
 WORKDIR /app
 
-# copy requirements file and install python dependencies
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
-# copy the entire backend project into the container
+# Copy the entire backend project into the container
 COPY . .
 
 # expose server port
