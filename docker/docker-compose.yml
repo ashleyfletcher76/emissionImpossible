@@ -1,0 +1,75 @@
+version: '3.9'
+
+services:
+  backend-db:
+    container_name: backend-db
+    build: ./../backend/postgres
+    environment:
+      POSTGRES_USER: ${BACKEND_SERVICE_USER}
+      POSTGRES_PASSWORD: ${BACKEND_SERVICE_PASSWORD}
+      POSTGRES_DB: ${BACKEND_SERVICE_DB}
+    volumes:
+      - backend_data:/var/lib/postgresql/data
+    networks:
+      my_network:
+    healthcheck:
+      test: [ "CMD-SHELL", "[ -f /var/lib/postgresql/data/.db_ready ] || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+    ports:
+      - "5432:5432"
+
+  backend-service:
+    build: ./../backend
+    container_name: backend-service
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DJANGO_DEBUG: ${DJANGO_DEBUG}
+      BACKEND_SERVICE_DB: ${BACKEND_SERVICE_DB}
+      BACKEND_SERVICE_USER: ${BACKEND_SERVICE_USER}
+      BACKEND_SERVICE_PASSWORD: ${BACKEND_SERVICE_PASSWORD}
+      DJANGO_SUPERUSER_USERNAME: ${DJANGO_SUPERUSER_USERNAME}
+      DJANGO_SUPERUSER_EMAIL: ${DJANGO_SUPERUSER_EMAIL}
+      DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
+      DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE}
+    networks:
+      my_network:
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -k -f http://localhost:8000/auth/health/ || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      backend-db:
+        condition: service_healthy
+    restart: always
+    ports:
+      - "8000:8000"
+
+#   nginx:
+#     build: ./../frontend
+#     container_name: nginx
+#     depends_on:
+#       auth-service:
+#         condition: service_healthy
+#       user-service:
+#         condition: service_healthy
+#       chat-service:
+#         condition: service_healthy
+#       pong-game:
+#         condition: service_healthy
+#     networks:
+#       my_network:
+#     ports:
+#       - "80:80"
+#       - "443:443"
+#     restart: always
+
+networks:
+  my_network:
+
+
+volumes:
+  backend_data:
