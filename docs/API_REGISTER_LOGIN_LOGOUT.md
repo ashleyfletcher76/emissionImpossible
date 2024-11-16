@@ -11,8 +11,8 @@ Request Body:
 ```json
 {
     "username": "string",
-    "email": "string",
-    "password": "string"
+    "password": "string",
+    "home_city": "string"
 }
 ```
 
@@ -23,8 +23,7 @@ Response:
 {
     "message": "User created successfully",
     "user": {
-        "username": "testuser",
-        "email": "testuser@example.com"
+        "username": "testuser"
     }
 }
 ```
@@ -40,12 +39,12 @@ Response:
 ```bash
 import axios from 'axios';
 
-const registerUser = async (username, email, password) => {
+const registerUser = async (username, password, home_city) => {
   try {
     const response = await axios.post('http://localhost:8000/backend/register/', {
       username,
-      email,
       password,
+      home_city, // Add the user's home city
     });
     console.log(response.data);
   } catch (error) {

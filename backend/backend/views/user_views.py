@@ -15,15 +15,14 @@ class UserRegisterView(APIView):
         if User.objects.filter(username=request.data.get("username")).exists():
             return Response({"error": "Username already exists"}, status=status.HTTP_400_BAD_REQUEST)
 
-        if User.objects.filter(email=request.data.get("email")).exists():
-            return Response({"error": "Email already exists"}, status=status.HTTP_400_BAD_REQUEST)
-
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
             logger.info("User created successfully: %s", serializer.data)
             return Response(
-                {"message": "User created successfully", "user": serializer.data},
+                {
+                    "message": "User created successfully",
+                    "user": user.username},
                 status=status.HTTP_201_CREATED,
             )
         logger.error("Registration failed: %s", serializer.errors)
