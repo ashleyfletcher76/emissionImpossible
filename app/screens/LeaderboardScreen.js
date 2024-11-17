@@ -1,15 +1,16 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View, Image, FlatList, StatusBar } from 'react-native';
 
 const users = [
-  { rank: 1, name: 'Bob', score: 96, image: require('../../assets/profile_images/user1.png') },
-  { rank: 2, name: 'Alice', score: 90, image: require('../../assets/profile_images/user2.png') },
-  { rank: 3, name: 'John Doe', score: 82, image: require('../../assets/profile_images/john_doe.png') },
-  { rank: 4, name: 'Diana', score: 87, image: require('../../assets/profile_images/user4.png') },
-  { rank: 5, name: 'Eve', score: 85, image: require('../../assets/profile_images/user1.png') },
-  { rank: 6, name: 'Charlie', score: 89, image: require('../../assets/profile_images/user3.png') },
-  { rank: 7, name: 'Grace', score: 80, image: require('../../assets/profile_images/user2.png') },
-  { rank: 8, name: 'Barry', score: 80, image: require('../../assets/profile_images/user4.png') },
+  { rank: 1, name: 'Bob', score: 82, change: +9, image: require('../../assets/profile_images/user1.png') },
+  { rank: 2, name: 'Alice', score: 82, change: +6, image: require('../../assets/profile_images/user2.png') },
+  { rank: 3, name: 'John Doe', score: 82, change: +3, image: require('../../assets/profile_images/john_doe.png') },
+  { rank: 4, name: 'Diana', score: 82, change: +1, image: require('../../assets/profile_images/user4.png') },
+  { rank: 5, name: 'Eve', score: 82, change: 0, image: require('../../assets/profile_images/user1.png') },
+  { rank: 6, name: 'Charlie', score: 82, change: -2, image: require('../../assets/profile_images/user3.png') },
+  { rank: 7, name: 'Grace', score: 82, change: -5, image: require('../../assets/profile_images/user2.png') },
+  { rank: 8, name: 'Marion', score: 82, change: -7, image: require('../../assets/profile_images/user4.png') },
+  { rank: 9, name: 'Dave', score: 82, change: -7, image: require('../../assets/profile_images/user3.png') },
 ];
 
 const cities = [
@@ -24,44 +25,43 @@ const cities = [
 ];
 
 export default function LeaderboardScreen() {
-  const rankingListRef = useRef(null);
-  const cityListRef = useRef(null);
-
   return (
     <View style={styles.container}>
       <Text style={styles.sectionTitle}>Your Ranking</Text>
       <View style={styles.rankingSection}>
         <FlatList
-          ref={rankingListRef}
           data={users}
           keyExtractor={(item) => item.rank.toString()}
           renderItem={({ item }) => (
             <View
               style={[
                 styles.userItem,
-                item.name === 'John Doe' ? styles.highlightedItem : null,
+                item.rank <= 3 ? styles.topUserItem : null,
+                item.rank >= users.length - 2 ? styles.bottomUserItem : null,
+                item.name === 'John Doe' ? styles.johnDoeItem : null,
               ]}
             >
-              <Text style={[styles.userRank, item.name === 'John Doe' && styles.highlightedText]}>
-                {item.rank}
-              </Text>
+              <Text style={[styles.userRank, item.name === 'John Doe' && styles.johnDoeText]}>{item.rank}</Text>
               <Image source={item.image} style={styles.profileImage} />
-              <Text style={[styles.userName, item.name === 'John Doe' && styles.highlightedText]}>
-                {item.name}
-              </Text>
-              <Text style={[styles.userScore, item.name === 'John Doe' && styles.highlightedText]}>
-                {item.score}
+              <Text style={[styles.userName, item.name === 'John Doe' && styles.johnDoeText]}>{item.name}</Text>
+              <Text style={[styles.userScore, item.name === 'John Doe' && styles.johnDoeText]}>{item.score}</Text>
+              <Text
+                style={[
+                  styles.userChange,
+                  item.change > 0 ? styles.positiveChange : styles.negativeChange,
+                  item.name === 'John Doe' && styles.johnDoeText,
+                ]}
+              >
+                {item.change > 0 ? `+${item.change}` : item.change}
               </Text>
             </View>
           )}
-          initialScrollIndex={5}
         />
       </View>
 
       <Text style={styles.sectionTitle}>Top Cities</Text>
       <View style={styles.citySection}>
         <FlatList
-          ref={cityListRef}
           data={cities}
           keyExtractor={(item) => item.rank.toString()}
           renderItem={({ item }) => (
@@ -71,15 +71,18 @@ export default function LeaderboardScreen() {
                 item.name === 'Heilbronn' ? styles.highlightedItem : null,
               ]}
             >
-              <Text style={[styles.cityRank, item.name === 'Heilbronn' && styles.highlightedText]}>
-                {item.rank}
-              </Text>
-              <Text style={[styles.cityName, item.name === 'Heilbronn' && styles.highlightedText]}>
-                {item.name}
-              </Text>
-              <Text style={[styles.cityScore, item.name === 'Heilbronn' && styles.highlightedText]}>
-                {item.score}
-              </Text>
+              <Text style={[
+                styles.cityRank,
+                item.name === 'Heilbronn' && styles.heilbronnText,
+              ]}>{item.rank}</Text>
+              <Text style={[
+                styles.cityName,
+                item.name === 'Heilbronn' && styles.heilbronnText,
+              ]}>{item.name}</Text>
+              <Text style={[
+                styles.cityScore,
+                item.name === 'Heilbronn' && styles.heilbronnText,
+              ]}>{item.score}</Text>
             </View>
           )}
         />
@@ -141,17 +144,35 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   userScore: {
+    width: 60,
     fontSize: 18,
     color: '#4CAF50',
     fontWeight: '700',
+    textAlign: 'center',
   },
-  highlightedItem: {
-    backgroundColor: '#407691',
-    borderColor: '#2f5773',
-  },
-  highlightedText: {
-    color: '#ffffff',
+  userChange: {
+    width: 60,
+    fontSize: 18,
     fontWeight: '700',
+    textAlign: 'center',
+  },
+  positiveChange: {
+    color: '#006400',
+  },
+  negativeChange: {
+    color: '#8B0000',
+  },
+  topUserItem: {
+    backgroundColor: '#e6ffe6',
+  },
+  bottomUserItem: {
+    backgroundColor: '#ffe6e6',
+  },
+  johnDoeItem: {
+    backgroundColor: '#006400',
+  },
+  johnDoeText: {
+    color: '#FFFFFF',
   },
   cityItem: {
     flexDirection: 'row',
@@ -178,5 +199,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#407691',
     fontWeight: '600',
+  },
+  highlightedItem: {
+    backgroundColor: '#407691',
+    borderColor: '#2f5773',
+  },
+  heilbronnText: {
+    color: '#FFFFFF',
+    fontWeight: '700',
   },
 });

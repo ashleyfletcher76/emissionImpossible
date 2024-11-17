@@ -6,7 +6,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import HomeScreen from '../screens/HomeScreen';
 import LeaderboardScreen from '../screens/LeaderboardScreen';
 import SettingsScreen from '../screens/SettingsScreen';
-import YourJourneysScreen from '../screens/YourJourneysScreen';
+import GroupLeaderboards from '../screens/GroupLeaderboards';
 import { CityMap } from '../screens/CityMap';
 
 const Tab = createBottomTabNavigator();
@@ -40,11 +40,11 @@ export default function BottomTabNavigator() {
           }}
         />
         <Tab.Screen
-          name="YourJourneys"
-          component={YourJourneysScreen}
+          name="Groups"
+          component={GroupLeaderboards}
           options={{
-            tabBarLabel: 'Journeys',
-            tabBarIcon: () => <Text>🗺️</Text>,
+            tabBarLabel: 'Groups',
+            tabBarIcon: () => <Text>👨‍👩‍👧‍👦</Text>,
           }}
         />
         <Tab.Screen
